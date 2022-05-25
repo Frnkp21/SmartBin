@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es-ES">
+  <head>
+    <meta charset="utf-8">
+    <title>SMART BIN</title>
+    <link rel="stylesheet" href="./style.css">
+    <body background="https://static.vecteezy.com/system/resources/previews/002/370/753/non_2x/technology-background-with-a-electronic-concept-vector.jpg"></body>
+   </head>
+  <body>
+    <h1>SMART BIN</h1>
+    <div class="rejilla4-2">
+      <div class="rejilla3"><h4>INICIO</h4><a href="index.html"><img src="https://thumbs.dreamstime.com/b/bot%C3%B3n-de-icono-inicio-158711757.jpg" width="370" height="325"></a></div>
+      <div class="rejilla3"><h4>PASOS</h4><a href="pasos.html"><img src="https://ayvisa.es/wp-content/uploads/2021/03/imagenes-de-pasos-a-seguir-820x500.jpg" width="370" height="325"></a></div>
+      <div class="rejilla3"><h4>MATERIALES</h4><a href="materiales.html"><img src="https://www.elinvernaderocreativo.com/wp-content/uploads/2018/08/Tipos-de-cutters.jpg" width="370" height="325"></a></div>
+    </div>
+    <h3><p>Este es el manual que utilizaremos para ver el código del robot y como hacerlo funcionar</p></h3>
+
+    <h1><p>Cual es su función?</p></h1>
+        <h4><p>Su función principal es cuando detecta el sensor de ultrasonidos da una vuelta y se abre la tapa, sus funciones secundarias serian que enciende una luz roja en la nariz y hace sonidos con un altavoz que tiene puesto</p></h4> 
+        <h1><video width="700" height="640" controls>
+        <source src="video.mp4" type="video/mp4">
+        </video>
+        </h1>
+        <h1><p>Para hacerlo funcionar</p></h1>
+        <h4>Primero debemos poner el código del Arduino</h4>
+        <div class="letra-introduccion2">
+          <h4>Codigo del Arduino</h4>
+          <p>
+        <h7>
+         ----------------------------------------------------------------------- <br>
+          
+          En la parte superior del área de trabajo hemos añadido unos comentarios con los materiales necesarios que hemos escogido para crear “Smart Bin”<br>
+          
+          //placa de arduino uno<br>
+          //modulo arduino para control de motores<br>
+          //servomotor<br>
+          //módulo ultrasonidos<br>
+          //2 motores corriente continua,2 ruedas, 1 rueda loca<br>
+          //buzzer pasivo<br>
+          //led<br>
+          //cables<br>
+          //interruptor<br>
+          
+          ------------------------------------------------------------------------------<br>
+          
+          #include <VarSpeedServo.h> <br>
+          VarSpeedServo servo;<br>
+          
+          Añadimos la librería del servo motor.<br>
+          
+          Una librería es un conjunto de archivos que se utiliza para desarrollar software. Suele estar compuesta de código y datos<br>
+          
+          ------------------------------------------------------------------------------<br>
+          
+          int velocidad = 10; <br>
+          
+          Agregamos un entero para el servo motor, su valor es de 10<br>
+    
+          ------------------------------------------------------------------------------<br>
+          
+          #include <SR04.h> <br>
+          
+          Añadimos la librería del sensor ultrasonido<br>
+          
+          Una librería es un conjunto de archivos que se utiliza para desarrollar software. Suele estar compuesta de código y datos<br>
+          
+          --------------------------------------------------------------------------------<br>
+          
+          #define Trigger 7 <br>
+          #define Echo 4<br>
+          
+          Definimos los pines. <br>
+          
+          Estos pines irán al lado digital, los cuales podemos conectar sensores o dispositivos<br><br>
+          
+          
+          -------------------------------------------------------------------------<br><br>
+          
+          
+          SR04 sr04 = SR04(Echo, Trigger);<br>
+          
+          Echo: Manda un pulso de ultrasonidos<br>
+          Trigger:  Se encarga en recibirlo<br>
+          
+          -------------------------------------------------------------------------<br>
+          
+          long distancial;<br>
+          
+          variable para alojar el valor de la distancia que medirá el ultrasonidos<br>
+          
+          --------------------------------------------------------------------------<br>
+          
+          const int buzPin  = 3; <br>
+          
+          Asignamos el pin 3 como digital<br>
+          
+          ---------------------------------------------------------------------------<br>
+          
+          int led = 13; //pin digital asignado<br>
+          
+          pin 13 digital asignado para el funcionamiento del led rojo <br>
+          
+          ----------------------------------------------------------------------------<br>
+          
+          const int activo_izquierdo = 6; <br>
+          const int izquierdo_adelante = 8;<br>
+          const int izquierdo_atras = 9;<br><br>
+          
+          
+          
+          Asignando las constante enteras de los motores de la parte izquierda<br>
+          
+          Estos pines iran al lado digital.<br>
+          
+          ---------------------------------------------------------------------------<br><br>
+          
+          
+          const int activo_derecho = 5; <br>
+          const int derecho_adelante = 10;<br>
+          const int derecho_atras = 11;<br>
+          
+          Asignando las constante enteras de los motores de la parte derecha <br>
+          
+          Estos pines iran al lado digital.<br>
+          
+          ----------------------------------------------------------------------------<br>
+          
+          void setup() {<br>
+          
+          }<br>
+          
+          Es la primera función a ejecutar en el programa y se utiliza para configurar, inicializar variables, comenzar a usar librerías, etc… ... Esta función es el núcleo de todos los programas de Arduino y se usa para el control activo de la placa.<br>
+
+          ---------------------------------------------------------------------------- <br>
+           pinMode(led, OUTPUT); <br>
+          
+           Define el pin conectado el led para salida<br>
+          
+          ----------------------------------------------------------------------------<br>
+          
+          servo.attach(2);<br>
+          servo.write(0, velocidad, false); <br>
+          
+          Se refiere a:<br>
+          servo.write(angulo,velocidad,false)<br>
+          
+          ----------------------------------------------------------------------------<br><br>
+          
+          
+            pinMode(activo_izquierdo, OUTPUT);  //pines digitales para salida<br>
+            pinMode(izquierdo_adelante, OUTPUT);<br>
+            pinMode(izquierdo_atras, OUTPUT);<br>
+          
+            pinMode(activo_derecho, OUTPUT);<br>
+            pinMode(derecho_adelante, OUTPUT);<br>
+            pinMode(derecho_atras, OUTPUT);<br>
+        
+            parado();<br>
+          }<br>
+          
+          Configuración de los motores.<br>
+          
+          El pinMode es el número del pin que se quiere configurar, este número está escrito en la tarjeta Arduino que se usará.<br>
+          
+          Finalmente se cierra con una clave “ } ”<br>
+          
+          ----------------------------------------------------------------------------<br>
+          
+          void loop() {<br>
+           
+            distancia1 = sr04.Distance();<br>
+          
+          Indicamos que la variable distancia1 = r04.Distance<br>
+          
+          ---------------------------------------------------------------------------<br>
+          
+          if (distancia1 <= 30) { <br>
+            digitalWrite(led, HIGH); <br>
+            sonido(); <br>
+            delay(10);<br>
+          
+          si la distancia al obstáculo es igual o menor de 30 cm, hará las siguientes cosas:<br>
+          
+          Enciende el led de la nariz<br>
+          
+          Activar sonido<br>
+          
+          Y añadir un delay de 10 milisegundos<br>
+          -------------------------------------------------------------------------<br>
+           giro360(); <br>
+            delay(3000);<br>
+            parado(); <br>
+          
+          Funcion de giro<br>
+          
+          delay de 3 segundos <br>
+          
+          y la función de los motores<br>
+          
+          ---------------------------------------------------------------------------<br>
+          
+          sonido();<br>
+          delay(10);<br>
+          
+          Añadir un delay en la variable sonido<br>
+          
+          ---------------------------------------------------------------------------<br>
+          
+          atras(); <br>
+            delay(500);<br>
+          adelante(); <br>
+            delay(500);<br>
+          parado();<br>
+            delay(1000);<br>
+          
+          Función de marcha atrás<br>
+          
+          Función de marcha adelante<br>
+          
+          -------------------------------------------------------------------------------<br>
+          
+          sonido();<br>
+            delay(10);<br>
+          sonido();<br>
+            delay(10);<br>
+          
+          delay de 10 milisegundos<br>
+          
+          --------------------------------------------------------------------------------<br><br>
+          
+          
+          
+          
+          
+          servo.write(90, 100, false); <br>
+          servo.write(angulo,velocidad)<br>
+            delay(3000);<br>
+          
+           activar servomotor(abrir tapa deprisa) <br>
+          
+          -----------------------------------------------------------------------------------<br>
+          
+          servo.write(0, velocidad, false); <br>
+            delay(3000);<br>
+          
+          cierra la tapa despacio<br>
+          
+          --------------------------------------------------------------------------------------<br>
+          
+          digitalWrite(led, LOW); //apaga el led<br>
+            } else {<br>
+              parado();<br>
+            servo.write(0, 255, false);<br>
+            digitalWrite(buzPin, LOW);<br>
+            digitalWrite(led, LOW);<br>
+            }<br>
+          
+          }<br>
+          
+          si la distancia al utrasonido es mayor a 30 cm ejecutará estas cosas<br>
+          
+          ------------------------------------------------------------------------------------------<br>
+          
+          void sonido() { <br>
+            tone(buzPin, 440); <br>
+            delay(300);<br>
+            noTone(buzPin); <br>
+          }<br>
+          
+          funcion para el sonido<br>
+          el sonido que se oirá<br>
+          parar el sonido<br>
+          
+          --------------------------------------------------------------------------------------------<br>
+          
+          
+          
+          void parado() { <br>
+            analogWrite(activo_izquierdo, 0);<br>
+            analogWrite(activo_derecho, 0);<br>
+          
+          }<br>
+          
+          para todos los motores<br>
+          
+          -----------------------------------------------------------------------------------------<br>
+          
+          
+          void adelante() {<br>
+            analogWrite(activo_izquierdo, 200);<br>
+            analogWrite(activo_derecho, 200);<br>
+          
+            digitalWrite(izquierdo_adelante, HIGH);<br>
+            digitalWrite(izquierdo_atras, LOW);<br>
+            digitalWrite(derecho_adelante, HIGH);<br>
+            digitalWrite(derecho_atras, LOW);<br>
+          
+          }<br>
+          
+           activa los dos motores en sentido adelante<br>
+          
+          ------------------------------------------------------------------------------------------<br>
+          
+          void atras() { <br>
+            analogWrite(activo_izquierdo, 200);<br>
+            analogWrite(activo_derecho, 200);<br>
+          
+            digitalWrite(izquierdo_adelante, LOW);<br>
+            digitalWrite(izquierdo_atras, HIGH);<br>
+            digitalWrite(derecho_adelante, LOW);<br>
+            digitalWrite(derecho_atras, HIGH);<br>
+          
+          }
+          
+          activa los dos motores en sentido atras<br>
+          
+          --------------------------------------------------------------------------------------------<br>
+          
+          
+          
+          
+          void izquierda() { <br>
+            analogWrite(activo_izquierdo, 0);<br>
+            analogWrite(activo_derecho, 200);<br>
+          
+            digitalWrite(izquierdo_adelante, LOW);<br>
+            digitalWrite(izquierdo_atras, LOW);<br>
+            digitalWrite(derecho_adelante, HIGH);<br>
+            digitalWrite(derecho_atras, LOW);<br>
+          }<br>
+          
+          activa un motor y para el otro<br>
+          
+          ----------------------------------------------------------------------------------------------------<br>
+          
+          void derecha() {<br>
+            digitalWrite(activo_izquierdo, 200);<br>
+            digitalWrite(activo_derecho, 0);<br>
+          
+            digitalWrite(izquierdo_adelante, HIGH);<br>
+            digitalWrite(izquierdo_atras, LOW);<br>
+            digitalWrite(derecho_adelante, LOW);<br>
+            digitalWrite(derecho_atras, LOW);<br>
+          }<br>
+          
+           activa un motor y para el otro<br>
+          
+          --------------------------------------------------------------------------------------------------<br>
+          
+          void giro360() { //realiza un giro de 360 grados aproximadamente<br>
+            analogWrite(activo_izquierdo, 200);<br>
+            analogWrite(activo_derecho, 200);<br>
+          
+            digitalWrite(izquierdo_adelante, HIGH);<br>
+            digitalWrite(izquierdo_atras, LOW);<br>
+            digitalWrite(derecho_adelante, LOW);<br>
+            digitalWrite(derecho_atras, HIGH);<br>
+          
+          }<br>
+          
+           realiza un giro de 360 grados aproximadamente<br>
+          
+          ---------------------------------------------------------------------------------------------------<br>
+        </h7>
+        </p> 
+        </div> 
+        <h4>Segundo deberemos poner las pilas</h4>
+        <h1><img src="pilas.png" alt="imagen" width="700" height="640"></h1>
+        <h4>Tercero deberemos poner el interruptor en ON</h4>
+        <h1><img src="palanca.jpg" alt="imagen" width="700" height="640"></h1>
+
+    <h2><a name="Redes sociales">Redes sociales</a></h2>
+    <hr>
+  </body>
+  <h3><p><a href="https://www.instagram.com/">Instagram</a></p>
+  <p><a href="https://es-es.facebook.com/">Facebook</a></p>
+  <p><a href="https://twitter.com/?lang=es">Twitter</a></p>
+  <p><a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjfh_OtyOj3AhXygP0HHQf0AIYQFnoECAgQAQ&url=https%3A%2F%2Fwww.google.com%2Fintl%2Fes%2Fgmail%2Fabout%2F&usg=AOvVaw1GLEnuksd5WStYxYiH9BH2">perezcarvajalfrank@elpuig.xeill.net</a></p>
+  <p><a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjfh_OtyOj3AhXygP0HHQf0AIYQFnoECAgQAQ&url=https%3A%2F%2Fwww.google.com%2Fintl%2Fes%2Fgmail%2Fabout%2F&usg=AOvVaw1GLEnuksd5WStYxYiH9BH2">drubiano@elpuig.xeill.net</a></p>
+  <div id="licencia">
+    <img src="derechos.png" alt=""></h3>
+</html>
